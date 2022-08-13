@@ -1,41 +1,39 @@
-﻿using System.Globalization;
-
-namespace Task1
+﻿namespace Task1
 {
     internal class Program
     {
         private static void Main(string[] args)
         {
             var size = InputSquareMatrixSize();
+            
+            var twoDimensionArray = InputTwoDimensionArray(size, size);
 
-            var squareMatrix = InputSquareMatrix(size);
+            var squareMatrix = new SquareMatrix(twoDimensionArray);
 
-            OutputSquareMatrix(squareMatrix);
+            Console.WriteLine(squareMatrix);
 
-            var squareMatrixPriamaryDiagonalSum = GetSquareMatrixPrimaryDiagonalSum(squareMatrix);
+            var sum = squareMatrix.PrimaryDiagonalSum();
 
-            Console.WriteLine("Square matrix primary diagonal sum: {0}", squareMatrixPriamaryDiagonalSum);
+            Console.WriteLine("Square matrix primary diagonal sum: {0}", sum);
         }
 
-        private static float[][] InputSquareMatrix(int sideSize)
+        private static float[][] InputTwoDimensionArray(int rowCount, int columnCount)
         {
-            var squareMatrix = new float[sideSize][];
+            var twoDimensionArray = new float[rowCount][];
 
-            for (var row = 0; row < sideSize; ++row) 
+            Enumerable.Range(0, rowCount).ToList().ForEach(rowIndex =>
             {
-                squareMatrix[row] = new float[sideSize];
+                twoDimensionArray[rowIndex] = new float[columnCount];
 
-                for (var column = 0; column < sideSize; ++column)
+                Enumerable.Range(0, columnCount).ToList().ForEach(columnIndex =>
                 {
-                    var previewText = string.Format("[{0}][{1}]: ", row, column);
+                    var previewText = string.Format("[{0}][{1}]: ", rowIndex + 1, columnIndex + 1);
 
-                    var number = InputNumber(previewText);
+                    twoDimensionArray[rowIndex][columnIndex] = InputNumber(previewText);
+                });
+            });
 
-                    squareMatrix[row][column] = number;
-                }
-            }
-
-            return squareMatrix;
+            return twoDimensionArray;
         }
 
         private static float InputNumber(string previewText)
@@ -45,11 +43,13 @@ namespace Task1
 
             do
             {
+                Console.Clear();
+
                 Console.Write(previewText);
 
                 input = Console.ReadLine();
             }
-            while (!float.TryParse(input, NumberStyles.Float, CultureInfo.CurrentCulture, out number));
+            while (!float.TryParse(input, out number));
 
             return number;
         }
@@ -61,28 +61,15 @@ namespace Task1
 
             do
             {
-                Console.Write("Matrix size: ");
+                Console.Clear();
+
+                Console.Write("Square matrix size: ");
 
                 input = Console.ReadLine();
             }
             while (!int.TryParse(input, out size) || size < 1);
 
             return size;
-        }
-
-        private static float GetSquareMatrixPrimaryDiagonalSum(float[][] squareMatrix)
-        {
-            return squareMatrix.Select((x, i) => x[i]).Sum();
-        }
-
-        private static void OutputSquareMatrix(float[][] squareMatrix)
-        {
-            squareMatrix.ToList().ForEach(row =>
-            {
-                row.ToList().ForEach(number => Console.Write("{0,-5}", number));
-
-                Console.WriteLine();
-            });
         }
     }
 }
