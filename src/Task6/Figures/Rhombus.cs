@@ -13,6 +13,11 @@
         public Rhombus(float sideSize, float angle)
             : base(sideSize)
         {
+            if (angle <= 0 || 180 <= angle)
+            {
+                throw new ArgumentException("Angle can not be less or equals zero and can not be more or equals 180 degrees", nameof(angle));
+            }
+
             _angle = angle;
         }
 

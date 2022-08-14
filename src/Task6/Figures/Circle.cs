@@ -12,6 +12,11 @@
 
         public Circle(float radius)
         {
+            if (radius <= 0)
+            {
+                throw new ArgumentException("Radius can not be less or equals zero!", nameof(radius));
+            }
+
             _radius = radius;
         }
 

@@ -13,6 +13,16 @@
 
         public Rectangle(float width, float height)
         {
+            if (width <= 0)
+            {
+                throw new ArgumentException("Width can not be less or equals zero!", nameof(width));
+            }
+
+            if (height <= 0)
+            {
+                throw new ArgumentException("Height can not be less or equals zero!", nameof(height));
+            }
+
             _width = width;
             _height = height;
         }
